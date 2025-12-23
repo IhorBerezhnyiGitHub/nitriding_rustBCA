@@ -1,0 +1,42 @@
+#Use with SPHERE geometry option only
+[options]
+name = "boron_nitride_"
+track_trajectories = true
+track_recoils = true
+track_recoil_trajectories = true
+weak_collision_order = 0
+num_threads = 1
+num_chunks = 1
+
+[material_parameters]
+energy_unit = "EV"
+mass_unit = "AMU"
+Eb = [ 0.0, 0.0,]
+Es = [ 5.76, 0.0,]
+Ec = [ 5.76, 1.0,]
+Z = [ 5, 7,]
+m = [ 10.811, 14.0,]
+interaction_index = [0, 0]
+surface_binding_model = "TARGET"
+bulk_binding_model = "AVERAGE"
+
+[particle_parameters]
+length_unit = "ANGSTROM"
+energy_unit = "EV"
+mass_unit = "AMU"
+N = [ 20 ]
+m = [ 1.008 ]
+Z = [ 1 ]
+E = [ 500.0 ]
+Ec = [ 1.0 ]
+Es = [ 10.0 ]
+pos = [ [ -100.0, 0.0, 0.0,] ]
+dir = [ [ 0.9999999999984769, 1.7453292519934434e-6, 0.0,] ]
+interaction_index = [ 0 ]
+particle_input_filename=""
+
+[geometry_input]
+length_unit = "ANGSTROM"
+radius = 100.0
+electronic_stopping_correction_factor = 1.0
+densities = [0.065, 0.065]
