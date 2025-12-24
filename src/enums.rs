@@ -20,6 +20,20 @@ pub enum Distributions {
     POINT(f64),
 }
 
+#[derive(Deserialize, PartialEq, Clone, Copy)]
+#[serde(untagged)]
+pub enum Distributions_IEDF {
+    UNIFORM{min: f64, max: f64},
+    NORMAL{mean: f64, std: f64},
+    CUSTOM { //we are only allowed to count max 32 points 
+        //the sampling is based on weightened random
+        //it allows us to pick a certain value from "choises" with probability defined in "weights"
+        choices: [f64; 10], // the second number is how many values are in the array
+        weights: [f64; 10] 
+    },
+    POINT(f64),
+}
+
 #[derive(Deserialize)]
 pub enum GeometryType {
     MESH0D,

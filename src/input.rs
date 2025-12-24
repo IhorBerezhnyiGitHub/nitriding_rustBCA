@@ -1,5 +1,8 @@
 use super::*;
-use rand_distr::{Normal, Distribution, Uniform};
+use rand_distr::{Normal, Distribution, Uniform, WeightedIndex};
+//extern crate random_choice;
+//use self::random_choice::random_choice;
+
 
 pub trait InputFile: GeometryInput {
     fn new(string: &str) -> Self;
@@ -557,9 +560,15 @@ where <T as Geometry>::InputFileFormat: Deserialize<'static> + 'static {
                             m: m*mass_unit,
                             Z: Z,
                             E: match E {
-                                Distributions::NORMAL{mean, std} => {let normal = Normal::new(mean, std).unwrap(); normal.sample(&mut rand::thread_rng())*energy_unit},
-                                Distributions::UNIFORM{min, max} => {let uniform = Uniform::from(min..max);  uniform.sample(&mut rand::thread_rng())*energy_unit},
-                                Distributions::POINT(E) => E*energy_unit,
+                                Distributions_IEDF::NORMAL{mean, std} => {let normal = Normal::new(mean, std).unwrap(); normal.sample(&mut rand::thread_rng())*energy_unit},
+                                Distributions_IEDF::UNIFORM{min, max} => {let uniform = Uniform::from(min..max);  uniform.sample(&mut rand::thread_rng())*energy_unit},
+                                // Custom distribution from https://docs.rs/rand/latest/rand/distr/weighted/struct.WeightedIndex.html
+                                //not working for now
+                                Distributions_IEDF::CUSTOM{choices, weights} => {
+                                    let dist = WeightedIndex::new(weights).unwrap();
+                                    choices[dist.sample(&mut rand::thread_rng())]*energy_unit
+                                },
+                                Distributions_IEDF::POINT(E) => E*energy_unit,
                             },
                             Ec: Ec*energy_unit,
                             Es: Es*energy_unit,
@@ -630,9 +639,13 @@ where <T as Geometry>::InputFileFormat: Deserialize<'static> + 'static {
                             m: m*mass_unit,
                             Z: Z,
                             E: match E {
-                                Distributions::NORMAL{mean, std} => {let normal = Normal::new(mean, std).unwrap(); normal.sample(&mut rand::thread_rng())*energy_unit},
-                                Distributions::UNIFORM{min, max} => {let uniform = Uniform::from(min..max);  uniform.sample(&mut rand::thread_rng())*energy_unit},
-                                Distributions::POINT(x) => x*energy_unit,
+                                Distributions_IEDF::NORMAL{mean, std} => {let normal = Normal::new(mean, std).unwrap(); normal.sample(&mut rand::thread_rng())*energy_unit},
+                                Distributions_IEDF::UNIFORM{min, max} => {let uniform = Uniform::from(min..max);  uniform.sample(&mut rand::thread_rng())*energy_unit},
+                                Distributions_IEDF::CUSTOM{choices, weights} => {
+                                    let dist = WeightedIndex::new(weights).unwrap();
+                                    choices[dist.sample(&mut rand::thread_rng())]*energy_unit
+                                },
+                                Distributions_IEDF::POINT(x) => x*energy_unit,
                             },
                             Ec: Ec*energy_unit,
                             Es: Es*energy_unit,
