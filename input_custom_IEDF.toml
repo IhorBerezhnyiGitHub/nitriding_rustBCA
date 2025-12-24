@@ -1,0 +1,76 @@
+#Use with 2D geometry option only
+[options]
+name = "ferum_nitriding_"
+track_trajectories = true
+track_recoils = true
+track_recoil_trajectories = false
+write_buffer_size = 8000
+weak_collision_order = 3
+suppress_deep_recoils = false
+high_energy_free_flight_paths = false
+electronic_stopping_mode = "LOW_ENERGY_NONLOCAL"
+mean_free_path_model = "LIQUID"
+interaction_potential = [["KR_C"]]
+scattering_integral = [["MENDENHALL_WELLER"]]
+use_hdf5 = false
+root_finder = [[{"NEWTON"={max_iterations=100, tolerance=1E-6}}]]
+num_threads = 4
+num_chunks = 10
+track_displacements = false
+track_energy_losses = false
+energy_min = 0.0
+energy_max = 200.0
+energy_num = 20
+angle_min = 0.0
+angle_max = 90.0
+angle_num = 20
+x_min = 0.0
+y_min = -30
+z_min = -0.1
+x_max = 50
+y_max = 80
+z_max = 0.1
+x_num = 50
+y_num = 20
+z_num = 20
+
+[particle_parameters]
+length_unit = "ANGSTROM"
+energy_unit = "EV"
+mass_unit = "AMU"
+N = [ 1000 ]
+m = [ 14.008 ]
+Z = [ 7 ]
+#IF YOU INCREASE THE SIZE OF THE 'E' ARRAYS:  
+#   Replace '10' with your array size in file enums.rs:  
+#    CUSTOM { //we are only allowed to count 32 points 
+#        choices: [f64; 10], // the second number is how many values are in the array
+#        weights: [f64; 10] 
+#    },
+#
+# In folder scripts\Prepare_IEDF_array a .pdf file is placed, which tells how to select the "choises" and "weights"
+E = [{choices = [12.76485978, 38.29455032, 63.82424086, 89.3539314, 114.8836219, 140.4133125, 165.943003, 191.4726936, 217.0023841, 242.5320747], weights = [0.057926829268292686, 0.08028455284552846, 0.09857723577235772, 0.09654471544715447, 0.1402439024390244, 0.18495934959349594, 0.20020325203252032, 0.09247967479674797, 0.041666666666666664, 0.007113821138211382]  }]
+Ec = [ 1.0 ]
+Es = [ 0.0 ]
+interaction_index = [0]
+pos = [ [0, {min=0.0,max=50}, 0,],]
+#pos = [ [0, 0, 0,],]
+dir = [ [ 0.999, 0.001, 0.0,],]
+
+#1D
+[geometry_input]
+length_unit = "MICRON"
+densities = [ [ 3.0e+10, 0.0,],[ 3.0e+10, 0.0,], [ 3.0e+10, 0.0,],]
+layer_thicknesses = [0.1, 10, 100]
+electronic_stopping_correction_factors = [1.0, 1.0]
+
+[material_parameters]
+energy_unit = "EV"
+mass_unit = "AMU"
+# for now it doesnt work without second species
+Eb = [ 0.0, 0.0,] #bulk binding energy of each species
+#Es = [ 5.76, 5.76,] 
+Es = [ 4.3, 4.3,]#surface binding energy of each species
+Ec = [ 1.0, 1.0,]#displacement binding energy of each species
+Z = [ 26, 26,]
+m = [ 55.85, 55.85,]
